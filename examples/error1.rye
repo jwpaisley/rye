@@ -1,0 +1,5 @@
+/= error1.rye =/
+  if (var p) {
+      print("hi");
+  }
+end

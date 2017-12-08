@@ -1,0 +1,10 @@
+/= conditionals.rye =/
+  var ten = 10;
+  if(ten < 10){
+      print("ten is less than 10");
+  }elif (ten > 10) {
+      print("ten is greater than 10");
+  } else {
+      print("ten is exactly 10");
+  }
+end

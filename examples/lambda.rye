@@ -1,0 +1,3 @@
+/= lambda.rye =/
+  print("Lambda expressions are not yet implemented in Rye.");
+end

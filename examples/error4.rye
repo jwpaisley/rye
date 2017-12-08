@@ -1,0 +1,7 @@
+/= error4.rye =/
+  var x = 5;
+  var y = "10";
+  if(x < y){
+    print("x is less than y");
+  }
+end
