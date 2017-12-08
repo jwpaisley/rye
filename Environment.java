@@ -1,3 +1,6 @@
+// Environment.java
+// Rye Programming Language
+// Jacob Paisley
 public class Environment {
     // insert new value and variable into the first lists in the environment
     // returns the newly inserted value

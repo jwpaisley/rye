@@ -1,3 +1,6 @@
+// Evaluator.java
+// Rye Programming Language
+// Jacob Paisley
 import java.util.ArrayList;
 
 public class Evaluator {

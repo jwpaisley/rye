@@ -1,7 +1,6 @@
-// Rye Programming Language
-// Jacob Paisley, 2017
 // Main.java
-
+// Rye Programming Language
+// Jacob Paisley
 public class Main {
     protected static void runFile(String filename) {
         // Create a new parser for the file.

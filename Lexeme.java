@@ -1,3 +1,6 @@
+// Lexeme.java
+// Rye Programming Language
+// Jacob Paisley
 import java.util.ArrayList;
 
 public class Lexeme {
