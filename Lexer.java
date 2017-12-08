@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class Lexer {
-    int offset = 0; // keeping track of the index offset in the individual lexeme functions
-    char[] characters; // input character array
-    int currentIndex = 0; // current index into the array of input characters
     Hashtable keywords;
+    int currentIndex = 0;
+    int offset = 0;
+    char[] characters;
 
     public Lexer(String fileContents) {
         characters = fileContents.toCharArray();
@@ -23,8 +23,8 @@ public class Lexer {
 
     public void initiateKeyWords() {
         keywords = new Hashtable();
-        keywords.put("for" , "FOR");
         keywords.put("var", "VARDEF");
+        keywords.put("for" , "FOR");
         keywords.put("if", "IF");
         keywords.put("elif", "ELIF");
         keywords.put("else", "ELSE");
@@ -35,23 +35,23 @@ public class Lexer {
         keywords.put("and", "AND");
         keywords.put("print", "PRINT");
         keywords.put("lambda", "LAMBDA");
+        keywords.put("arr", "ARR");
         keywords.put("true", "BOOLEAN");
         keywords.put("false", "BOOLEAN");
         keywords.put("null", "NULL");
-        keywords.put("arr", "ARR");
     }
 
     public Lexeme lex() {
         char ch = characters[currentIndex];
-        if (ch == '\"') { // if the character is a quotation, make a string lexeme
+        if (ch == '\"') {
             return lexString(characters, currentIndex + 1);
-        } else if (isNumeric(ch)) { // if the character is numeric, make a number lexeme (probably double or int)
-            return lexNumber(ch, characters, currentIndex + 1, false); // positive number
+        } else if (isNumeric(ch)) {
+            return lexNumber(ch, characters, currentIndex + 1, false);
         } else if (ch == '-') {
             if (isNumeric(characters[currentIndex + 1])) {
                 currentIndex += 1;
-                ch = characters[currentIndex]; // get the number
-                return lexNumber(ch, characters, currentIndex + 1, true); // negative number
+                ch = characters[currentIndex];
+                return lexNumber(ch, characters, currentIndex + 1, true);
             } else {
                 currentIndex += 1;
                 return new Lexeme("BINOPERATOR", "" + ch);
@@ -119,13 +119,13 @@ public class Lexer {
                 currentIndex += 1;
                 return new Lexeme("EQUAL");
             }
-        }  else if (ch == '*' || ch == '+') { // if a + or * check if it's single or double (* or **)
-            return checkChar(characters, currentIndex + 1, ch); // plus 1 because checkChar also takes the character
-        } else if (ch == ' ') { // just keep moving if ch is a space
+        }  else if (ch == '*' || ch == '+') {
+            return checkChar(characters, currentIndex + 1, ch);
+        } else if (ch == ' ') {
             currentIndex += 1;
             return new Lexeme("SPACE");
-        } else if (isAlpha(ch)) { // if an alpha character
-            return lexAlpha(characters, currentIndex); // make a "word" lexeme
+        } else if (isAlpha(ch)) {
+            return lexAlpha(characters, currentIndex);
         }
 
         return null;
@@ -135,7 +135,7 @@ public class Lexer {
         int i = index;
         char ch = chars[index];
         String buffer = "";
-        while (ch != ' ' && i <= chars.length && (isNumeric(ch) || isAlpha(ch))) { // check how much of the char array got parsed, subtract 1 to account for increment
+        while (ch != ' ' && i <= chars.length && (isNumeric(ch) || isAlpha(ch))) {
             buffer += ch;
             if (keywords.containsKey(buffer)) {
                 offset = buffer.length() - 1;
@@ -143,12 +143,12 @@ public class Lexer {
                 if (keywords.get(buffer).toString() == "VARDEF") {
                     return new Lexeme(keywords.get(buffer).toString(), buffer);
                 }
-                return new Lexeme(keywords.get(buffer).toString()); // make a new buffer with the keyword
+                return new Lexeme(keywords.get(buffer).toString());
             }
             i = i + 1;
             ch = chars[i];
         }
-        if (characters[currentIndex] == '.') { // see if it's an array add
+        if (characters[currentIndex] == '.') {
             currentIndex += 1;
             String newBuff = "";
             ch = characters[currentIndex];
@@ -166,12 +166,9 @@ public class Lexer {
         return new Lexeme("VAR", buffer);
     }
 
-    /*
-    * a function to check for duplicate chars, to use with the ++ and ** operators
-     */
     public Lexeme checkChar(char[] chars, int index, char ch) {
         int i = index;
-        if (chars[i] == ch) { // if the next char is the same as the first, return a lexeme with 2 chars as the type
+        if (chars[i] == ch) {
             offset = 1;
             currentIndex += offset + 1;
             return new Lexeme("UNIOPERATOR", "" + ch + ch);
@@ -180,20 +177,14 @@ public class Lexer {
             currentIndex += 1;
             return new Lexeme("BINOPERATOR", "" + ch);
         } else {
-            return new Lexeme("BAD CHAR"); // THROW AN ERROR
+            return new Lexeme("BAD CHAR");
         }
     }
 
-    /*
-    * check if a character is alpha, based on its ASCII value
-     */
     public boolean isAlpha(char ch) {
         return (((int) ch >= 65 && (int) ch <=90) || ((int) ch >= 97 && (int) ch <= 122));
     }
 
-    /*
-    gets a comment
-     */
     public Lexeme getComment() {
         String buffer = "";
         currentIndex += 1;
@@ -206,64 +197,53 @@ public class Lexer {
         return new Lexeme("COMMENT", buffer);
     }
 
-    /*
-    * check if a character is numeric, based on its ASCII value
-     */
     public boolean isNumeric(char ch) {
         return (int) ch >= 48 && (int) ch <= 57;
     }
 
-    /*
-    * function to return a string lexeme
-    * should return an error if there is no end quotation
-     */
     public Lexeme lexString(char[] chars, int index) {
-        String buffer = ""; // make a string buffer to store each char
+        String buffer = "";
         int i = index;
         char ch = chars[i];
         while (ch != '\"') {
-            buffer += ch; // add the character to buffer
+            buffer += ch;
             i = i + 1;
-            ch = chars[i]; // move to the next character
+            ch = chars[i];
         }
-        offset = buffer.length() - 1; // check how much of the char array got parsed, subtract 1 to account for incrementation in for loop
+        offset = buffer.length() - 1;
         currentIndex += offset + 3;
         return new Lexeme("STRING", buffer);
     }
 
-    /*
-    * function to return a numeric lexeme, either an int or a double
-    * should return error if a character is
-     */
     public Lexeme lexNumber(char ch, char[] chars, int index, boolean is_negative) {
         int i = index;
         String buffer;
         if (is_negative) {
-            buffer = "-" + ch; // don't forget the first digit!
+            buffer = "-" + ch;
         } else {
-            buffer = "" + ch; // don't forget the first digit!
+            buffer = "" + ch;
         }
         ch = chars[i];
         boolean isDouble = false;
 
-        while (ch != ' ' && i <= chars.length) { // keep going until there's a space
+        while (ch != ' ' && i <= chars.length) {
             if (ch == '.') {
-                isDouble = true; // if there's a decimal, then it's a double
-                buffer += ch; // add the decimal to buffer
+                isDouble = true;
+                buffer += ch;
             } else if (isNumeric(ch)) {
-                buffer += ch; // add the digit to buffer
+                buffer += ch;
             } else {
                 break;
             }
             i = i + 1;
-            ch = chars[i]; // move to the next character
+            ch = chars[i];
         }
 
         if (is_negative) {
-            offset = buffer.length() - 2; // check how much of the char array got parsed, subtract 1 to account for incre
+            offset = buffer.length() - 2;
 
         } else {
-            offset = buffer.length() - 1; // check how much of the char array got parsed, subtract 1 to account for incre
+            offset = buffer.length() - 1;
         }
         currentIndex += offset + 1;
         if (isDouble) {
