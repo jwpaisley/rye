@@ -17,7 +17,6 @@ public class Parser {
     public Lexeme parse() throws Exception {
         try {
             Lexeme tree = parseRecursive();
-            //inOrderTraversal(tree);
         } catch (Exception e) {
             System.out.println("illegal");
             e.printStackTrace();
@@ -49,16 +48,12 @@ public class Parser {
         currentLexeme = lexer.lex();
         while (currentLexeme.type == "SPACE" || currentLexeme.type == "COMMENT") {
             if (currentLexeme.type == "EOF") {
-                //System.out.println("booop");
                 break;
             }
             currentLexeme = lexer.lex();
         }
     }
 
-    /*
-    * check if the lexeme is of a given type
-     */
     public Lexeme match(String type) throws Exception {
         matchNoAdvance(type);
         Lexeme returnLex = currentLexeme;
@@ -66,35 +61,20 @@ public class Parser {
         return returnLex;
     }
 
-    /*
-    * if the lexeme isn't matched, throw an exception
-     */
     public void matchNoAdvance(String type) throws Exception {
         if (!check(type)) {
             throw new Exception("Syntax error");
         }
     }
 
-    /*
-    * check if the current lexeme is of a given type
-     */
     public boolean check(String type) {
         return currentLexeme.type == type;
     }
 
-    /*
-    *     primary: variable
-           | literal
-           | lambdaCall
-           | functionCall
-     */
     public Lexeme primary() throws Exception {
-        // not using tree variable here because they're all single lexemes
-        // don't need left and right
         try {
             Lexeme tree = new Lexeme("primary");
             if (varExpressionPending()) {
-                //System.out.println("var expression pending");
                 return varExpression();
             } else if (literalPending()) {
                 tree.left = literal();
@@ -107,10 +87,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 27: lambda call
-    * lambdaCall: LAMBDA OPAREN paramList CPAREN
-     */
     public void lambdaCall() throws Exception { // TODO: 4/19/16 fix these dang lambda calls
         Lexeme tree;
         match("LAMBDA");
@@ -120,16 +96,8 @@ public class Parser {
         //return tree;
     }
 
-    /*
-    Rule 4:
-        binaryOperator: PLUS
-            | MINUS
-            | comparator
-            | MULT
-            | MULTMULT
-     */
     public boolean binaryOperatorPending() {
-        return check("BINOPERATOR"); //check("PLUS") || check("MINUS") || check("MULT") || check("MULTMULT") || check("COMPARATOR");
+        return check("BINOPERATOR");
     }
 
     public Lexeme binaryOperator() throws Exception {
@@ -155,7 +123,6 @@ public class Parser {
     }
 
     public Lexeme unaryOperator() throws Exception {
-        // no need for tree variable here
         try {
             if (check("PLUSPLUS")) {
                 return match("PLUSPLUS");
@@ -185,19 +152,10 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 8: expression
-    * expression: primary
-          | primary operator expression
-          | primary unaryOperator
-          | RETURN primary
-     */
     public Lexeme expression() throws Exception {
         try {
             Lexeme tree = new Lexeme("expression");
-            //System.out.println("in expr");
             if (primaryPending()) {
-                //System.out.println("primary pending");
                 tree.left = primary();
                 if (check("UNIOPERATOR")) {
                     Lexeme temp = tree.left;
@@ -229,10 +187,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * parse function for literal
-    * corresponds to rule 1 in grammar
-     */
     public Lexeme literal() {
         try {
             if (check("INTEGER")) {
@@ -251,11 +205,6 @@ public class Parser {
         return  null;
     }
 
-
-    /*
-    * Rule 23:
-    * body: OBRACKET expressionList CBRACKET
-     */
     public Lexeme body() throws Exception {
         try {
             Lexeme tree = new Lexeme("block");
@@ -270,12 +219,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 31
-    statementList: null
-                 | statement
-                 | statementList
- */
     public Lexeme statementList() throws Exception{
         try {
             Lexeme tree = new Lexeme("statementList");
@@ -292,10 +235,6 @@ public class Parser {
         return null;
     }
 
-
-    /*
-    * rule 25: lambda
-     */
     public Lexeme lambda() throws Exception {
         try {
             Lexeme tree;
@@ -311,11 +250,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    Rule 22: opt expression list
-    if there's an expression pending, match it and then call the fn again
-    else, do nothing
-     */
     public Lexeme optExpressionList() throws Exception{
         Lexeme tree;
         if (expressionPending()) {
@@ -326,18 +260,10 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 17: paramList
-    * if parameter, match and then call the fn again
-    * else do nothing
-     */
     public Lexeme paramList() throws Exception {
         try {
             Lexeme tree = new Lexeme("paramList");
-            //System.out.println("hey");
-            //System.out.println(primaryPending());
             if (primaryPending()) {
-                //System.out.println("primary pending");
                 tree.left = primary();
                 tree.right = paramList();
                 return tree;
@@ -354,18 +280,12 @@ public class Parser {
         return check("VAR");
     }
 
-    /*
-    * rule 28: varExpression
-    *     varExpression: VAR
-                       | VAR OPAREN paramList CPAREN
-     */
     public Lexeme varExpression() throws Exception {
         try {
-            Lexeme tree = new Lexeme("VAREXPR"); // make dummy type node
+            Lexeme tree = new Lexeme("VAREXPR");
             tree.left = match("VAR");
             Lexeme top = new Lexeme("primary");
-            if (check("OPAREN")) { // it's a call
-                //System.out.println("function call");
+            if (check("OPAREN")) {
                 match("OPAREN");
                 Lexeme temp = tree.left;
                 tree = new Lexeme("function_call");
@@ -373,10 +293,8 @@ public class Parser {
                 tree.left.left = paramList();
                 top.left = tree;
                 match("CPAREN");
-                return top; // make this a primary
-                //tree.left.right.left = match("CPAREN");
-            } else if (check("EQUAL")) { // reassignment
-                //System.out.println("assignment");
+                return top;
+            } else if (check("EQUAL")) {
                 match("EQUAL");
                 Lexeme temp = tree.left;
                 tree = new Lexeme("assignment");
@@ -384,12 +302,9 @@ public class Parser {
                 tree.left.left = primary();
                 return tree;
             } else if (check("OSQUARE")) {
-/*            tree.left = arrayIndex();
-            top.left = tree;*/
-                top.left = arrayExpression(tree.left); // make an array expression, passing in the array name (previously acquired VAR lexeme)
+                top.left = arrayExpression(tree.left);
                 return top;
             } else if (binaryOperatorPending()) {
-                //Lexeme temp = tree.left;
                 Lexeme jv = new Lexeme("just_var");
                 jv.left = tree.left;
                 tree = new Lexeme("binoperation");
@@ -408,7 +323,7 @@ public class Parser {
                 top.left.left = prim;
                 top.left.right = primary();
                 return top;
-            } else { // just a variable and the evaluater will need to grab its value
+            } else {
                 Lexeme jv = new Lexeme("just_var");
                 jv.left = tree.left;
                 top.left = jv;
@@ -420,9 +335,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * see if the next lexeme is a literal
-     */
     public boolean literalPending() {
         return (check("INTEGER") || check("STRING") || check("BOOLEAN") || check("DOUBLE"));
     }
@@ -431,37 +343,18 @@ public class Parser {
         return check("LAMBDA");
     }
 
-    /*
-    * super not sure about this one
-     */
     public boolean lambdaCallPending() {
         return check("LAMBDA");
     }
 
-    /*
-    primary: variable
-           | literal
-           | lambda
-           | function
-     */
     public boolean primaryPending() {
         return literalPending() || varExpressionPending();
     }
 
     public boolean expressionPending() {
-        // check if a primary is pending
         return primaryPending() || check("VARDEF") || check("RETURN") || check("ARR");
     }
 
-    /*
-    * check if a variable is pending
-    * variable
-    variable: functionCall
-            | lambda
-            | literal
-            | expression
-        need to double/triple check this
-     */
     public boolean variablePending() {
         return check("VAR");
     }
@@ -484,10 +377,6 @@ public class Parser {
         return check("VARDEF");
     }
 
-    /*
-    * Rule 30: paramDec
-    *
-     */
     public Lexeme paramDec() throws Exception {
         try {
             Lexeme tree = match("VARDEF");
@@ -500,19 +389,10 @@ public class Parser {
         return null;
     }
 
-    /*
-    * check if a statement is pending
-    */
     public boolean statementPending() {
         return expressionPending() || check("FOR") || check("WHILE") || ifExpressionPending() || printPending() || check("DEF") || check("RETURN") || check("LAMBDA");
     }
 
-    /*
-    * Rule 32: statement
-    *     stat
-    *     ement: expression SEMI
-             | RETURN primary SEMI
-     */
     public Lexeme statement() throws Exception {
         try {
             Lexeme tree = new Lexeme("statement");
@@ -530,9 +410,6 @@ public class Parser {
                 return tree;
             } else if (expressionPending()) {
                 tree.left = expression();
-                //System.out.println("<start>");
-                //inOrderTraversal(tree);
-                //System.out.println("</end>");
                 tree.left.right = match("SEMI");
                 return tree;
             } else if (whilePending()) {
@@ -555,12 +432,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 29: paramDecList
-    *     paramDecList: nullf
-                | paramDec
-                | paramDecList
-     */
     public Lexeme paramDecList() throws Exception {
         try {
             Lexeme tree = new Lexeme("paramDecList");
@@ -577,10 +448,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 24: functionDef
-    * functionDef: DEF VAR OPAREN paramDecList CPAREN body
-     */
     public Lexeme functionDef() throws Exception {
         try {
             Lexeme tree = new Lexeme("functionDef");
@@ -606,9 +473,6 @@ public class Parser {
         return check("NOT");
     }
 
-    /*
-    * Rule 10: conditional
-     */
     public Lexeme conditional() throws Exception {
         try {
             Lexeme tree = new Lexeme("conditional");
@@ -638,16 +502,10 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 11: ifExpression
-    * ifExpression: IF OPAREN conditional CPAREN body
-     */
     public Lexeme ifExpression() throws Exception {
         try {
-            //System.out.println("<ifExpression>");
             Lexeme tree = match("IF");
             tree.left = match("OPAREN");
-            //tree.left.left = conditionalList();
             tree.left.left = conditional();
             match("CPAREN");
             tree.left.right = body();
@@ -667,10 +525,6 @@ public class Parser {
         return check("ELIF");
     }
 
-    /*
-    * Rule 32: elifExpression
-    * elifExpression: ELIF OPAREN conditional CPAREN
-     */
     public Lexeme elifExpression() throws Exception {
         try {
             Lexeme tree = match("ELIF");
@@ -686,11 +540,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 12: ifChain
-    * ifChain: ifExpression
-       | if Expression elifChain
-     */
     public Lexeme ifChain() throws Exception {
         try {
             Lexeme tree = ifExpression();
@@ -707,10 +556,6 @@ public class Parser {
         return check("ELSE");
     }
 
-    /*
-    * Rule 33: else expression
-    * elseExpression: ELSE body
-     */
     public Lexeme elseExpression() throws Exception {
         try {
             Lexeme tree = match("ELSE");
@@ -723,12 +568,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 13: Elif Chain
-    * elifChain: ELSE body
-         | elifExpression
-         | elifExpression elifChain
-     */
     public Lexeme elifChain() throws Exception {
         try {
             Lexeme tree = new Lexeme("elifChain");
@@ -760,10 +599,6 @@ public class Parser {
         return check("FOR");
     }
 
-    /*
-    * Rule 20: while loop
-    * whileLoop: WHILE OPAREN conditional CPAREN body
-     */
     public Lexeme whileLoop() throws Exception {
         try {
             Lexeme tree;
@@ -780,10 +615,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 21: for loop
-    * for: FOR OPAREN vardef COMMA conditional COMMA expression CPAREN body
-     */
     public Lexeme forExpression() throws Exception {
         try {
             //    System.out.println("in for expression");
@@ -809,10 +640,6 @@ public class Parser {
         return check("PRINT");
     }
 
-    /*
-    * Rule 34: print call
-    * printCall: PRINT OPAREN primary CPAREN
-     */
     public Lexeme printCall() throws Exception {
         try {
             Lexeme tree;
@@ -828,12 +655,6 @@ public class Parser {
         return null;
     }
 
-    /*
-    * Rule 35: conditional list
-    *     conditionalList: conditional
-                   | conditional AND conditional
-                   | conditional OR conditional
-     */
     public Lexeme conditionalList() throws Exception {
         try {
             Lexeme tree = new Lexeme("conditionalList");
@@ -865,11 +686,6 @@ public class Parser {
         return check("ARR");
     }
 
-    /*
-    * Rule 36: array declaration
-    * arrayDeclaration: ARR OSQUARE CSQUARE VAR
-    *                 | ARR OSQUARE CSQUARE VAR EQUAL OSQUARE primaryList CSQUARE
-     */
     public Lexeme arrayDeclaration() throws Exception {
         try {
             Lexeme tree = new Lexeme("arrayDec");
@@ -895,17 +711,17 @@ public class Parser {
                 match("EQUAL");
                 Lexeme tree = new Lexeme("arrIndexAssignment");
                 tree.left = ohBracket;
-                Lexeme jv = new Lexeme("just_var"); // so that the evaluator will get the variable's value (an array)
+                Lexeme jv = new Lexeme("just_var");
                 jv.left = array_name;
                 tree.left.left = jv;
                 Lexeme join = new Lexeme("join");
-                join.left = index; // the index
-                join.right = primary(); // the value we're assigning
+                join.left = index;
+                join.right = primary();
                 tree.left.right = join;
                 return tree;
             }
             Lexeme tree = new Lexeme("arrIndex");
-            Lexeme jv = new Lexeme("just_var"); // so that the evaluator will get the variable's value (an array)
+            Lexeme jv = new Lexeme("just_var");
             jv.left = array_name;
             tree.left = ohBracket;
             tree.left.left = jv;
@@ -924,7 +740,6 @@ public class Parser {
         if (tree == null) {
             return;
         }
-
         System.out.println(tree.type);
         inOrderTraversal(tree.left);
         inOrderTraversal(tree.right);

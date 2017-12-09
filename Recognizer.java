@@ -19,7 +19,6 @@ public class Recognizer {
     public void parse() throws Exception {
         currentLexeme = lexer.lex();
         while (currentLexeme.type != "EOF") {
-            //System.out.println("type " + currentLexeme.type);
             if (check("DEF")) {
                 functionDef();
             } else if (statementPending()) {
@@ -57,17 +56,11 @@ public class Recognizer {
         }
     }
 
-    /*
-    * check if the lexeme is of a given type
-     */
     public void match(String type) throws Exception {
         matchNoAdvance(type);
         advance();
     }
 
-    /*
-    * if the lexeme isn't matched, throw an exception
-     */
     public void matchNoAdvance(String type) throws Exception {
         System.out.println("type " + type +" currentLexeme type: " + currentLexeme.type);
         if (!check(type)) {
@@ -75,22 +68,10 @@ public class Recognizer {
         }
     }
 
-    /*
-    * check if the current lexeme is of a given type
-     */
     public boolean check(String type) {
-        //System.out.println("hhhh");
-        //System.out.println(currentLexeme.type);
-        //System.out.println(type);
         return currentLexeme.type == type;
     }
 
-    /*
-    *     primary: variable
-           | literal
-           | lambdaCall
-           | functionCall
-     */
     public void primary() throws Exception {
         if (varExpressionPending()) {
             System.out.println("variable pending in primary fn");
@@ -106,10 +87,6 @@ public class Recognizer {
         }
     }
 
-    /*
-    * Rule 27: lambda call
-    * lambdaCall: LAMBDA OPAREN paramList CPAREN
-     */
     public void lambdaCall() throws Exception {
         match("LAMBDA");
         match("OPAREN");
@@ -117,14 +94,6 @@ public class Recognizer {
         match("CPAREN");
     }
 
-    /*
-    Rule 4:
-        binaryOperator: PLUS
-            | MINUS
-            | comparator
-            | MULT
-            | MULTMULT
-     */
     public boolean binaryOperatorPending() {
         return check("PLUS") || check("MINUS") || check("MULT") || check("MULTMULT") || check("COMPARATOR");
     }
@@ -166,13 +135,6 @@ public class Recognizer {
         primary();
     }
 
-    /*
-    * Rule 8: expression
-    * expression: primary
-          | primary operator expression
-          | primary unaryOperator
-          | RETURN primary
-     */
     public void expression() throws Exception {
         if (primaryPending()) {
             primary();
@@ -193,10 +155,6 @@ public class Recognizer {
         }
     }
 
-    /*
-    * parse function for literal
-    * corresponds to rule 1 in grammar
-     */
     public void literal() {
         try {
             if (check("INTEGER")) {
@@ -214,23 +172,12 @@ public class Recognizer {
         }
     }
 
-
-    /*
-    * Rule 23:
-    * body: OBRACKET expressionList CBRACKET
-     */
     public void body() throws Exception {
         match("OBRACKET");
         statementList();
         match("CBRACKET");
     }
 
-    /*
-    * Rule 31
-    statementList: null
-                 | statement
-                 | statementList
- */
     public void statementList() throws Exception{
         //System.out.println("statement " + currentLexeme.type);
         if (statementPending()) {
@@ -240,21 +187,12 @@ public class Recognizer {
         }
     }
 
-
-    /*
-    * rule 25: lambda
-     */
     public void lambda() throws Exception {
         match("LAMBDA");
         paramList();
         body();
     }
 
-    /*
-    Rule 22: opt expression list
-    if there's an expression pending, match it and then call the fn again
-    else, do nothing
-     */
     public void optExpressionList() throws Exception{
         if (expressionPending()) {
             System.out.println("expression pending");
@@ -263,11 +201,6 @@ public class Recognizer {
         }
     }
 
-    /*
-    * Rule 17: paramList
-    * if parameter, match and then call the fn again
-    * else do nothing
-     */
     public void paramList() throws Exception {
         if (primaryPending()) {
             System.out.println("primary pending");
@@ -276,19 +209,12 @@ public class Recognizer {
         }
     }
 
-    /*
-    * Rule 15: variable
-        variable: functionCall
-                | lambda
-                | literal
-                | expression
-     */
     public void variable() throws Exception {
         if (varExpressionPending()) {
             varExpressionPending();
         } else if (expressionPending()) {
             expression();
-        } else if (check("VAR")) { // double check this
+        } else if (check("VAR")) {
             match("VAR");
         } else {
             throw new Exception("not a valid variable type");
@@ -299,18 +225,13 @@ public class Recognizer {
         return check("VAR");
     }
 
-    /*
-    * rule 28: varExpression
-    *     varExpression: VAR
-                       | VAR OPAREN paramList CPAREN
-     */
     public void varExpression() throws Exception {
         match("VAR");
-        if (check("OPAREN")) { // it's a call
+        if (check("OPAREN")) {
             match("OPAREN");
             paramList();
             match("CPAREN");
-        } else if (check("EQUAL")) { // reassignment
+        } else if (check("EQUAL")) {
             match("EQUAL");
             primary();
         } else if (check("OSQUARE")) {
@@ -318,9 +239,6 @@ public class Recognizer {
         }
     }
 
-    /*
-    * see if the next lexeme is a literal
-     */
     public boolean literalPending() {
         return (check("INTEGER") || check("STRING") || check("BOOLEAN") || check("DOUBLE"));
     }
@@ -329,38 +247,18 @@ public class Recognizer {
         return check("LAMBDA");
     }
 
-    /*
-    * super not sure about this one
-     */
     public boolean lambdaCallPending() {
         return check("LAMBDA");
     }
 
-    /*
-    primary: variable
-           | literal
-           | lambda
-           | function
-     */
     public boolean primaryPending() {
         return literalPending() || varExpressionPending();
     }
 
     public boolean expressionPending() {
-        // check if a primary is pending
-
         return primaryPending() || check("VARDEF") || check("RETURN") || check("ARR");
     }
 
-    /*
-    * check if a variable is pending
-    * variable
-    variable: functionCall
-            | lambda
-            | literal
-            | expression
-        need to double/triple check this
-     */
     public boolean variablePending() {
         return check("VAR");
     }
@@ -374,32 +272,19 @@ public class Recognizer {
 
     public boolean paramDecPending() {
         System.out.println("type " + currentLexeme.type);
-        //System.out.println(check("VARDEF"));
         return check("VARDEF");
     }
 
-    /*
-    * Rule 30: paramDec
-    *
-     */
     public void paramDec() throws Exception {
         match("VARDEF");
         System.out.println("CURRENT TYPE " + currentLexeme.type);
         match("VAR");
     }
 
-    /*
-    * check if a statement is pending
-    */
     public boolean statementPending() {
         return expressionPending() || check("FOR") || check("WHILE") || ifExpressionPending() || printPending();
     }
 
-    /*
-    * Rule 32: statement
-    *     statement: expression SEMI
-             | RETURN primary SEMI
-     */
     public void statement() throws Exception {
         System.out.println("in statement");
         if (check("RETURN")) {
@@ -427,12 +312,6 @@ public class Recognizer {
 
     }
 
-    /*
-    * Rule 29: paramDecList
-    *     paramDecList: null
-                | paramDec
-                | paramDecList
-     */
     public void paramDecList() throws Exception {
         if (paramDecPending()) {
             paramDec();
@@ -440,10 +319,6 @@ public class Recognizer {
         }
     }
 
-    /*
-    * Rule 24: functionDef
-    * functionDef: DEF VAR OPAREN paramDecList CPAREN body
-     */
     public void functionDef() throws Exception {
         System.out.println("before def");
         match("DEF");
@@ -468,9 +343,6 @@ public class Recognizer {
         return check("NOT");
     }
 
-    /*
-    * Rule 10: conditional
-     */
     public void conditional() throws Exception {
         if (primaryPending()) {
             primary();
@@ -486,10 +358,6 @@ public class Recognizer {
         }
     }
 
-    /*
-    * Rule 11: ifExpression
-    * ifExpression: IF OPAREN conditional CPAREN body
-     */
     public void ifExpression() throws Exception {
         match("IF");
         match("OPAREN");
@@ -506,10 +374,6 @@ public class Recognizer {
         return check("ELIF");
     }
 
-    /*
-    * Rule 32: elifExpression
-    * elifExpression: ELIF OPAREN conditional CPAREN
-     */
     public void elifExpression() throws Exception {
         match("ELIF");
         match("OPAREN");
@@ -517,11 +381,6 @@ public class Recognizer {
         match("CPAREN");
     }
 
-    /*
-    * Rule 12: ifChain
-    * ifChain: ifExpression
-       | if Expression elifChain
-     */
     public void ifChain() throws Exception {
         ifExpression();
         elifChain();
@@ -531,21 +390,11 @@ public class Recognizer {
         return check("ELSE");
     }
 
-    /*
-    * Rule 33: else expression
-    * elseExpression: ELSE body
-     */
     public void elseExpression() throws Exception {
         match("ELSE");
         body();
     }
 
-    /*
-    * Rule 13: Elif Chain
-    * elifChain: ELSE body
-         | elifExpression
-         | elifExpression elifChain
-     */
     public void elifChain() throws Exception {
         if (elseExpressionPending()) {
             elseExpression();
@@ -567,10 +416,6 @@ public class Recognizer {
         return check("FOR");
     }
 
-    /*
-    * Rule 20: while loop
-    * whileLoop: WHILE OPAREN conditional CPAREN body
-     */
     public void whileLoop() throws Exception {
         match("WHILE");
         match("OPAREN");
@@ -579,10 +424,6 @@ public class Recognizer {
         body();
     }
 
-    /*
-    * Rule 21: for loop
-    * for: FOR OPAREN vardef COMMA conditional COMMA expression CPAREN body
-     */
     public void forExpression() throws Exception {
         System.out.println("in for expression");
         match("FOR");
@@ -600,10 +441,6 @@ public class Recognizer {
         return check("PRINT");
     }
 
-    /*
-    * Rule 34: print call
-    * printCall: PRINT OPAREN primary CPAREN
-     */
     public void printCall() throws Exception {
         match("PRINT");
         match("OPAREN");
@@ -611,12 +448,6 @@ public class Recognizer {
         match("CPAREN");
     }
 
-    /*
-    * Rule 35: conditional list
-    *     conditionalList: conditional
-                   | conditional AND conditional
-                   | conditional OR conditional
-     */
     public void conditionalList() throws Exception {
         conditional();
         if (check("AND")) {
@@ -634,10 +465,6 @@ public class Recognizer {
         return check("ARR");
     }
 
-    /*
-    * Rule 37: array index
-    * arrIndex: VAR OSQUARE INTEGER CSQUARE
-     */
     public void arrayIndex() throws Exception {
         match("VAR");
         match("OSQUARE");
@@ -645,11 +472,6 @@ public class Recognizer {
         match("CSQUARE");
     }
 
-    /*
-    * Rule 36: array declaration
-    * arrayDeclaration: ARR OSQUARE CSQUARE VAR
-    *                 | ARR OSQUARE CSQUARE VAR EQUAL OSQUARE primaryList CSQUARE
-     */
     public void arrayDeclaration() throws Exception {
         match("ARR");
         match("OSQUARE");
@@ -665,11 +487,6 @@ public class Recognizer {
         match("CSQUARE");
     }
 
-    /*
-    * Rule 39: primary list
-    * primaryList: primary
-                 | primary COMMA primaryList
-     */
     public void primaryList() throws Exception {
         primary();
         if (check("COMMA")) {
@@ -680,8 +497,6 @@ public class Recognizer {
 
     public static void main(String[] args) throws Exception {
         Recognizer rec = new Recognizer("parseIn.txt");
-        //rec.currentLexeme = rec.lexer.lex();
         rec.parse();
-        //System.out.println();
     }
 }

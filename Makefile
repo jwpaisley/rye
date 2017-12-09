@@ -104,3 +104,14 @@ problem:
 
 problemx:
 	java Main examples/problem.rye -x
+
+all-tests:
+	java Main examples/error1.rye -x
+	java Main examples/error2.rye -x
+	java Main examples/error3.rye -x
+	java Main examples/error4.rye -x
+	java Main examples/error5.rye -x
+	java Main examples/arrays.rye -x
+	java Main examples/conditionals.rye -x
+	java Main examples/recursive.rye -x
+	java Main examples/iteration.rye -x
