@@ -1,3 +1,5 @@
 /= problem.rye =/
-  print("The Sieve of Eratosthoadnfaldjafljsd has not yet been implemented in Rye.");
+  def sieveOfEratosthenes(var n){
+      
+  }
 end

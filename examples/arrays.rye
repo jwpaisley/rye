@@ -2,7 +2,7 @@
   arr items = [];
   items[0] = "word";
   items[1] = 5;
-  items[2] = true;
+  items[2] = false;
   items[3] = 77.3;
   print(items[0]);
   print(items[1]);

@@ -1,17 +1,14 @@
 /= functions.rye =/
   def adjust(var x){
-    lambda(var x){
-      y + x;
-    }
+    lambda(var y){
+      return y + x;
+    };
   }
 
   def adjustCall(var function){
     var a = function(10);
-    var b = function(15);
     var x = a(5);
-    var y = b(22);
     print(x);
-    print(y);
   }
 
   adjustCall(adjust);

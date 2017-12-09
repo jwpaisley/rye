@@ -1,13 +1,18 @@
 # Rye
-## Contents
-
-## Basics
 ## Running a Program in Rye
-To interpret a program written in Rye, use the command `rye <filename> (-r)`.
-The `-r` flag is optional and will print the file's contents instead of evaluating them.
+To interpret a program written in Rye, use the command `rye <filename>` or `dpl <filename>`.
 
 ## The End of File (EOF)
 A valid Rye program's last line contains the keyword `end`. This is treated as an end-of-file lexeme and is used to signify the end of the program.
+
+## Hello World
+Writing the Hello World program is simple. Start with a comment saying what the program will do, such as `/= Hello world! =/`. Next, write the statements that you want your program to accomplish. In the 'Hello World' program, the only statement would be `print("Hello world!");`. Then, to end the program, write the end-of-file keyword, `end`. Putting these three steps together yields the "Hello World" program in Rye, as seen below.
+
+```
+/= Hello world! =/
+  print("Hello world!");
+end
+```
 
 ## Comments
 To write a comment in a Rye file, start your comment with `/=` and end it with `=/`. An example of a valid comment in Rye would be `/= This is a comment! =/`. Nothing in a comment is evaluated, so be sure to close the comment. Line comments do not exist in Rye.
@@ -49,12 +54,11 @@ while(x > 0){
 }
 ```
 
-## Recursion
-
-## Iteration
-
 ## Printing to the Console
+Printing to the console can be done using the built-in `print()` method. Arguments to the print method can be a literal of any type or the concatenation of two literals. For example, `print("x = " + x);` is a valid print statement, as are `print(true);` and `print("hello world!");`.
 
 ## Operators
+The operators accepted in Rye include `+`, `-`, `/`, `*`, `==`, `>`, `<`, `>=`, `<=`, `++`, and `--`.
 
 ## Anonymous Functions (Lambda)
+Lambdas are not yet fully implemented in Rye.
