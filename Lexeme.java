@@ -9,15 +9,17 @@ public class Lexeme {
     protected int iValue;
     protected double dValue;
     protected boolean bValue;
+    protected ArrayList aValue;
     protected Lexeme right;
     protected Lexeme left;
-    protected ArrayList aValue;
+    protected int lineNumber;
 
     public Lexeme(String type, String data) {
         this.type = type;
         this.strValue = data;
         this.left = null;
         this.right = null;
+        this.lineNumber = Main.lineNumber;
     }
 
     public Lexeme(String type, int iData) {
@@ -25,6 +27,7 @@ public class Lexeme {
         this.iValue = iData;
         this.left = null;
         this.right = null;
+        this.lineNumber = Main.lineNumber;
     }
 
     public Lexeme(String type, double dData) {
@@ -32,6 +35,7 @@ public class Lexeme {
         this.dValue = dData;
         this.left = null;
         this.right = null;
+        this.lineNumber = Main.lineNumber;
     }
 
     public Lexeme(String type, boolean bData) {
@@ -39,16 +43,19 @@ public class Lexeme {
         this.bValue = bData;
         this.left = null;
         this.right = null;
+        this.lineNumber = Main.lineNumber;
     }
 
     public Lexeme(String type) {
         this.type = type;
         this.left = null;
         this.right = null;
+        this.lineNumber = Main.lineNumber;
     }
 
     public Lexeme(String type, ArrayList array) {
         this.type = type;
         this.aValue = array;
+        this.lineNumber = Main.lineNumber;
     }
 }

@@ -43,7 +43,11 @@ public class Lexer {
 
     public Lexeme lex() {
         char ch = characters[currentIndex];
-        if (ch == '\"') {
+        if (ch == '#'){
+          Main.lineNumber++;
+          currentIndex += 1;
+          return new Lexeme("NEWLINE");
+        } else if (ch == '\"') {
             return lexString(characters, currentIndex + 1);
         } else if (isNumeric(ch)) {
             return lexNumber(ch, characters, currentIndex + 1, false);

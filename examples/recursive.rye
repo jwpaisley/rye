@@ -1,11 +1,12 @@
 /= recursive.rye =/
-  def recursive(var x) {
-      if (x > 0) {
-          print("x = " + x);
-          recursive(x - 1);
-      } else {
-          print("Recursion has completed.");
+  def fib(var n){
+      if(n <= 1){
+          return n;
+      }else{
+          var x = fib(n - 1) + fib(n - 2);
+          return x;
       }
   }
-  recursive(10);
+
+  print(fib(10));
 end

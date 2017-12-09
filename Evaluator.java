@@ -87,7 +87,7 @@ public class Evaluator {
     private Lexeme evalVar(Lexeme tree, Lexeme env) {
         Lexeme get = global.get(tree.left.strValue, env);
         if (get== null) {
-            System.out.println("Error: " + tree.left.strValue + " is undefined.");
+            System.out.println("[ERROR] " + tree.left.strValue + " is undefine (line " + tree.lineNumber + ").");
             System.exit(0);
         }
         Lexeme value = eval(get, env);
@@ -230,7 +230,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE"){
             return new Lexeme("DOUBLE", left.dValue - right.dValue);
         } else {
-            System.out.println("Error: cannot subtract types " + left.type + " and " + right.type);
+            System.out.println("[ERROR] Cannot subtract types " + left.type + " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -385,7 +385,7 @@ public class Evaluator {
         } else if (comparator.strValue.contentEquals("!=")) {
             return evalNotEqual(left, right);
         } else {
-            System.out.println("Error: invalid conditional expression.");
+            System.out.println("[ERROR] Invalid conditional expression on line " + tree.lineNumber + ".");
             System.exit(0);
             return null;
         }
@@ -401,7 +401,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE") {
             return new Lexeme("BOOLEAN", left.dValue < right.dValue);
         } else {
-            System.out.println("Error: cannot compare values of type " + left.type +  " and " + right.type);
+            System.out.println("[ERROR] Cannot compare values of type " + left.type +  " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -417,7 +417,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE") {
             return new Lexeme("BOOLEAN", left.dValue <= right.dValue);
         } else {
-            System.out.println("Error: cannot compare values of type " + left.type +  " and " + right.type);
+            System.out.println("[ERROR] Cannot compare values of type " + left.type +  " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -433,7 +433,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE") {
             return new Lexeme("BOOLEAN", left.dValue > right.dValue);
         } else {
-            System.out.println("Error: cannot compare values of type " + left.type +  " and " + right.type);
+            System.out.println("[ERROR] Cannot compare values of type " + left.type +  " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -449,7 +449,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE") {
             return new Lexeme("BOOLEAN", left.dValue >= right.dValue);
         } else {
-            System.out.println("Error: cannot compare values of type " + left.type +  " and " + right.type);
+            System.out.println("[ERROR] Cannot compare values of type " + left.type +  " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -465,7 +465,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE") {
             return new Lexeme("BOOLEAN", left.dValue == right.dValue);
         } else {
-            System.out.println("Error: cannot compare values of type " + left.type +  " and " + right.type);
+            System.out.println("[ERROR] Cannot compare values of type " + left.type +  " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -481,7 +481,7 @@ public class Evaluator {
         } else if (left.type == "DOUBLE" && right.type == "DOUBLE") {
             return new Lexeme("BOOLEAN", left.dValue != right.dValue);
         } else {
-            System.out.println("Error: cannot compare values of type " + left.type +  " and " + right.type);
+            System.out.println("[ERROR] Cannot compare values of type " + left.type +  " and " + right.type + " (line " + left.lineNumber + ").");
             System.exit(0);
             return null;
         }
@@ -541,7 +541,7 @@ public class Evaluator {
         ArrayList<Lexeme> array = global.get(array_name, env).aValue;
         int index = eval(tree.left.right, env).iValue;
         if (index >= array.size()) {
-            System.out.println("Error: attempted to access an out of range item");
+            System.out.println("[ERROR] Attempted to access an out of range item (" + array_name + "[" + index + "]) (line " + tree.lineNumber + ").");
             System.exit(0);
         }
         return array.get(index);

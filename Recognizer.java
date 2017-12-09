@@ -108,7 +108,7 @@ public class Recognizer {
         } else if (check("COMPARATOR")) {
             match("COMPARATOR");
         } else {
-            throw new Exception("Syntax Error: expected a binary operator");
+            throw new Exception("[ERROR] Expected a binary operator on line " + currentLexeme.lineNumber + ".");
         }
     }
 
@@ -122,7 +122,7 @@ public class Recognizer {
         } else if (check("MINUSMINUS")) {
             match("MINUSMINUS");
         } else {
-            throw new Exception("Syntax Error: expected a unary operator");
+            throw new Exception("[ERROR] Expected a unary operator on line " + currentLexeme.lineNumber + ".");
         }
     }
 
@@ -151,7 +151,7 @@ public class Recognizer {
             arrayDeclaration();
         }
         else {
-            new Exception("Syntax Error: invalid expression");
+            new Exception("[ERROR] Invalid expression on line " + currentLexeme.lineNumber + ".");
         }
     }
 
@@ -167,7 +167,7 @@ public class Recognizer {
                 match("STRING");
             }
         } catch (Exception e) {
-            System.out.println("caught exception in literal fn");
+            System.out.println("[ERROR] Invalid file. Caught an error in a literal function.");
             validFile = false;
         }
     }
@@ -179,7 +179,6 @@ public class Recognizer {
     }
 
     public void statementList() throws Exception{
-        //System.out.println("statement " + currentLexeme.type);
         if (statementPending()) {
             System.out.println("statement pending");
             statement();

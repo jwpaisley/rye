@@ -2,6 +2,7 @@
 // Rye Programming Language
 // Jacob Paisley
 public class Main {
+    protected static int lineNumber = 1;
     protected static void runFile(String filename) {
         Parser p = new Parser(filename);
         try {
