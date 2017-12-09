@@ -2,8 +2,6 @@
 // Rye Programming Language
 // Jacob Paisley
 public class Environment {
-    // insert new value and variable into the first lists in the environment
-    // returns the newly inserted value
     protected Lexeme addLocalVariable(Lexeme env, Lexeme id, Lexeme value) {
         Lexeme tempVars = env.left;
         Lexeme tempVals = env.right;
@@ -26,8 +24,6 @@ public class Environment {
         return envir;
     }
 
-    // searches for a variable in the environment using the variable's string id
-    // returns the variable's value if found or null if not
     protected Lexeme get(String id, Lexeme env) {
         if (env == null) {
             return null;
@@ -41,20 +37,16 @@ public class Environment {
             currentVal = currentVal.right;
             currentVar = currentVar.left;
         }
-        return get(id, env.right.right); // search the next environment
+        return get(id, env.right.right);
     }
 
     protected Lexeme update(String id, Lexeme value, Lexeme env) {
-        //System.out.println("id in update" + id);
         if (env == null) {
             return null;
         }
         Lexeme currentVar = env.left;
         Lexeme currentVal = env.right.left;
-        //System.out.println("current var.type " + currentVar.type);
-        //System.out.println("current var " + currentVar.strValue);
         if (currentVar.strValue.contentEquals(id)) {
-            //System.out.println("hey");
             Lexeme temp = currentVal.left;
             env.right.left = value;
             value.right = temp;
@@ -73,7 +65,7 @@ public class Environment {
             nextVal = nextVal.left;
             nextVar = nextVar.left;
         }
-        return update(id, value, env.right.right); // search the next environment
+        return update(id, value, env.right.right);
     }
 
     protected Lexeme create() {

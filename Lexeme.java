@@ -20,9 +20,6 @@ public class Lexeme {
         this.right = null;
     }
 
-    /*
-    * constructor for an integer lexeme
-     */
     public Lexeme(String type, int iData) {
         this.type = type;
         this.iValue = iData;
@@ -37,9 +34,6 @@ public class Lexeme {
         this.right = null;
     }
 
-    /*
-    * constructor for a boolean lexeme
-     */
     public Lexeme(String type, boolean bData) {
         this.type = type;
         this.bValue = bData;
@@ -47,18 +41,12 @@ public class Lexeme {
         this.right = null;
     }
 
-    /*
-    * constructor for a word lexeme
-     */
     public Lexeme(String type) {
         this.type = type;
         this.left = null;
         this.right = null;
     }
 
-    /*
-    * constructor for array lexeme
-     */
     public Lexeme(String type, ArrayList array) {
         this.type = type;
         this.aValue = array;

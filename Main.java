@@ -3,10 +3,7 @@
 // Jacob Paisley
 public class Main {
     protected static void runFile(String filename) {
-        // Create a new parser for the file.
         Parser p = new Parser(filename);
-
-        // Attempt recursive parsing and evaluation.
         try {
           Lexeme lexTree = p.parseRecursive();
           new Evaluator(lexTree);
@@ -15,12 +12,10 @@ public class Main {
         }
     }
 
-    // Print the file to the console.
     private static void printFile(String filename) {
       new FileScanner(filename);
     }
 
-    // The main method.
     public static void main(String[] args) {
         String filename = args[0];
         String flag = "-x";
