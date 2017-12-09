@@ -1,8 +1,7 @@
 /= iteration.rye =/
   var x = 10;
   while (x > 0){
-      print ("x = " + x);
+      print("x = " + x);
       x = x - 1;
   }
-  print("Iteration has completed.");
 end

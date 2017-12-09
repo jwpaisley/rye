@@ -7,6 +7,5 @@
           return x;
       }
   }
-
   print(fib(10));
 end

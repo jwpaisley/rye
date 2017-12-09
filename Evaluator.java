@@ -86,8 +86,8 @@ public class Evaluator {
 
     private Lexeme evalVar(Lexeme tree, Lexeme env) {
         Lexeme get = global.get(tree.left.strValue, env);
-        if (get== null) {
-            System.out.println("[ERROR] " + tree.left.strValue + " is undefine (line " + tree.lineNumber + ").");
+        if (get == null) {
+            System.out.println("[ERROR] " + tree.left.strValue + " is undefined (line " + tree.lineNumber + ").");
             System.exit(0);
         }
         Lexeme value = eval(get, env);
