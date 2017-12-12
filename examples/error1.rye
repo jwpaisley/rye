@@ -1,5 +1,5 @@
 /= error1.rye =/
-  if (var p) {
+  if(var p){
       print("hi");
   }
 end

@@ -96,7 +96,7 @@ statement: functionDef
 vardef: VARDEF VAR EQUAL variable
 
 19.
-comment: :) expression (:
+comment: /= expression =/
 
 20.
 whileLoop: WHILE OPAREN conditional CPAREN body

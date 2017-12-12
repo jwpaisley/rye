@@ -29,7 +29,6 @@ public class Main {
           printFile(filename);
         }
 
-        //
         if(flag.contains("x")){
           runFile(filename);
         }

@@ -1,11 +1,12 @@
 /= arrays.rye =/
   arr items = [];
-  items[0] = "word";
+  var x = 3;
+  items[0] = 1;
   items[1] = 5;
-  items[2] = false;
-  items[3] = 77.3;
+  items[2] = 7;
+  items[3] = 21;
   print(items[0]);
   print(items[1]);
   print(items[2]);
-  print(items[3]);
+  print(items[x]);
 end

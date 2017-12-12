@@ -88,13 +88,12 @@ public class Parser {
         return null;
     }
 
-    public void lambdaCall() throws Exception { // TODO: 4/19/16 fix these dang lambda calls
+    public void lambdaCall() throws Exception {
         Lexeme tree;
         match("LAMBDA");
         match("OPAREN");
         paramList();
         match("CPAREN");
-        //return tree;
     }
 
     public boolean binaryOperatorPending() {

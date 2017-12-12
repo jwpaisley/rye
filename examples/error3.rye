@@ -1,5 +1,5 @@
 /= error3.rye =/
-  define function(var x var y) {
+  define function(var x var y){
       print("hello");
   }
   function(1 3);

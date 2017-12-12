@@ -1,6 +1,6 @@
 Rye
 Running a Program in Rye:
-To interpret a program written in Rye, use the command 'rye <filename>' or 'dpl <filename>'.
+To interpret a program written in Rye, use the command 'rye <filename>' or 'dpl <filename> <-x/-r>'. The '-x' flag indicates that you wish to execute the provided Rye source code, while '-r' will simply read the file and print it back to you.
 
 The End of File (EOF):
 A valid Rye program's last line contains the keyword 'end'. This is treated as an end-of-file lexeme and is used to signify the end of the program.
