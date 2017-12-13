@@ -18,15 +18,15 @@ public class Lexer {
 
     public Lexer(String fileContents) {
         characters = fileContents.toCharArray();
-        initiateKeyWords();
+        initiateKeywords();
     }
 
-    public void initiateKeyWords() {
+    public void initiateKeywords() {
         keywords = new Hashtable();
         keywords.put("var", "VARDEF");
         keywords.put("for" , "FOR");
         keywords.put("if", "IF");
-        keywords.put("elif", "ELIF");
+        keywords.put("elsif", "ELIF");
         keywords.put("else", "ELSE");
         keywords.put("while", "WHILE");
         keywords.put("def", "DEF");
@@ -43,7 +43,7 @@ public class Lexer {
 
     public Lexeme lex() {
         char ch = characters[currentIndex];
-        if (ch == '#'){
+        if (ch == 'ñ'){
           Main.lineNumber++;
           currentIndex += 1;
           return new Lexeme("NEWLINE");

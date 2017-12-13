@@ -1,10 +1,28 @@
 /= conditionals.rye =/
+  var eight = 8;
+  if(eight < 10){
+      print("The variable 'eight' is less than 10.");
+  }elsif (eight > 10) {
+      print("The variable 'eight' is greater than 10.");
+  } else {
+      print("The variable 'eight' is exactly 10.");
+  }
+
   var ten = 10;
   if(ten < 10){
-      print("ten is less than 10");
-  }elif (ten > 10) {
-      print("ten is greater than 10");
+      print("The variable 'ten' is less than 10.");
+  }elsif (ten > 10) {
+      print("The variable 'ten' is greater than 10.");
   } else {
-      print("ten is exactly 10");
+      print("The variable 'ten' is exactly 10.");
+  }
+
+  var twenty = 20;
+  if(twenty < 10){
+      print("The variable 'twenty' is less than 10.");
+  }elsif (twenty > 10) {
+      print("The variable 'twenty' is greater than 10.");
+  } else {
+      print("The variable 'twenty' is exactly 10.");
   }
 end

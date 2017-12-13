@@ -10,8 +10,8 @@ public class Parser {
     public Lexeme currentLexeme;
     boolean validFile = true;
 
-    public Parser(String fileName) {
-        lexer = new Lexer(getFileContents(fileName));
+    public Parser(String filename) {
+        lexer = new Lexer(getFileContents(filename));
     }
 
     public Lexeme parse() throws Exception {
@@ -36,7 +36,7 @@ public class Parser {
             String line;
             while ((line = br.readLine()) != null) {
                 contents += line;
-                contents += "#";
+                contents += "ñ";
             }
             return contents;
         } catch (IOException e ) {

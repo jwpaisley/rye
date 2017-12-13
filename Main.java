@@ -1,20 +1,24 @@
 // Main.java
 // Rye Programming Language
 // Jacob Paisley
+//TODO: Implement lambda expressions
+//TODO: Implement functions as a first class object
+//TODO: Implement AVL-tree dictionary
+//TODO: Implement the Sieve of Eratosthenes
 public class Main {
     protected static int lineNumber = 1;
     protected static void runFile(String filename) {
         Parser p = new Parser(filename);
         try {
           Lexeme lexTree = p.parseRecursive();
-          new Evaluator(lexTree);
+          Evaluator e = new Evaluator(lexTree);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
 
     private static void printFile(String filename) {
-      new FileScanner(filename);
+      FileScanner f = new FileScanner(filename);
     }
 
     public static void main(String[] args) {
