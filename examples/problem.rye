@@ -1,5 +1,32 @@
 /= problem.rye =/
+  print("The Sieve of Eratosthenes has not been implemented in Rye.");
+
+  def sqrt(var n){
+
+  }
+
   def sieveOfEratosthenes(var n){
-      
+      arr prime = [];
+      var limit = sqrt(n);
+      var i = 2;
+
+      /= Loop to set all non-prime indices in the array to false. =/
+      while(i < j){
+        if(prime[i] == true){
+          var j = i * i;
+          while(j < n){
+            prime[j] = false;
+            j = j + i;
+          }
+        }
+      }
+
+      /= Loop to print all prime indices in the array. =/
+      var k = 0;
+      while(k < n){
+        if(prime[k]){
+          print(k);
+        }
+      }
   }
 end

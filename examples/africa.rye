@@ -1,0 +1,78 @@
+/= Africa by Toto =/
+  def wait(var n){
+    var x = 0;
+    var y = n * 12500000;
+    while(x < y){
+      x = x + 1;
+    }
+  }
+
+  def singAfricaByToto(){
+    print("I hear the drums echoing tonight");
+    wait(1);
+    print("But she hears only whispers of some quiet conversation");
+    wait(1);
+    print("She's coming in, 12:30 flight");
+    wait(1);
+    print("The moonlit wings reflect the stars that guide me towards salvation");
+    wait(1);
+    print("I stopped an old man along the way");
+    wait(1);
+    print("Hoping to find some long forgotten words or ancient melodies");
+    wait(1);
+    print("He turned to me as if to say, ''Hurry boy, it's waiting there for you''");
+    wait(1);
+    print("It's gonna take a lot to take me away from you");
+    wait(1);
+    print("There's nothing that a hundred men or more could ever do");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("Gonna take some time to do the things we never had");
+    wait(1);
+    print("The wild dogs cry out in the night");
+    wait(1);
+    print("As they grow restless, longing for some solitary company");
+    wait(1);
+    print("I know that I must do what's right");
+    wait(1);
+    print("As sure as Kilimanjaro rises like Olympus above the Serengeti");
+    wait(1);
+    print("I seek to cure what's deep inside, frightened of this thing that I've become");
+    wait(1);
+    print("It's gonna take a lot to drag me away from you");
+    wait(1);
+    print("There's nothing that a hundred men or more could ever do");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("Gonna take some time to do the things we never had");
+    wait(1);
+    print("Hurry boy, she's waiting there for you");
+    wait(1);
+    print("It's gonna take a lot to drag me away from you");
+    wait(1);
+    print("There's nothing that a hundred men or more could ever do");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("(I bless the rain)");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("(I bless the rain)");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("I bless the rains down in Africa");
+    wait(1);
+    print("(Ah, gonna take the time)");
+    wait(1);
+    print("Gonna take some time to do the things we never had");
+    wait(5);
+  }
+
+  singAfricaByToto();
+end

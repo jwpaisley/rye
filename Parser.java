@@ -56,6 +56,7 @@ public class Parser {
     }
 
     public Lexeme match(String type) throws Exception {
+        System.out.println("match(" + type +")");
         matchNoAdvance(type);
         Lexeme returnLex = currentLexeme;
         advance();
@@ -64,7 +65,7 @@ public class Parser {
 
     public void matchNoAdvance(String type) throws Exception {
         if (!check(type)) {
-            throw new Exception("Syntax error");
+            throw new Exception("[ERROR] Syntax error on line " + currentLexeme.lineNumber + ".");
         }
     }
 
@@ -236,11 +237,13 @@ public class Parser {
     }
 
     public Lexeme lambda() throws Exception {
+        System.out.println("parse lambda...");
         try {
-            Lexeme tree;
-            tree = match("LAMBDA");
-            tree.left = new Lexeme("dummy");
-            tree.left.left = paramList();
+            Lexeme tree = match("LAMBDA");
+            tree.left = new Lexeme("GLUE");
+            match("OPAREN");
+            tree.left.left = paramDecList();
+            match("CPAREN");
             tree.left.right = body();
             return tree;
         } catch (Exception e) {
@@ -424,6 +427,8 @@ public class Parser {
                 return tree;
             } else if (check("DEF")) {
                 return functionDef();
+            } else if (lambdaPending()){
+                return lambda();
             }
         } catch (Exception e) {
             System.out.println("[ERROR] Invalid statement on line " + currentLexeme.lineNumber + ".");
