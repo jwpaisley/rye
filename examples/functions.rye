@@ -5,11 +5,9 @@
     }
   }
 
-  def adjustCall(var function){
-    var a = function(10);
+  def adjustCall(){
+    var a = adjust(10);
     var b = a(5);
     print(b);
   }
-
-  adjustCall(adjust);
 end

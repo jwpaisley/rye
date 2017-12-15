@@ -56,7 +56,6 @@ public class Parser {
     }
 
     public Lexeme match(String type) throws Exception {
-        System.out.println("match(" + type +")");
         matchNoAdvance(type);
         Lexeme returnLex = currentLexeme;
         advance();
@@ -65,7 +64,7 @@ public class Parser {
 
     public void matchNoAdvance(String type) throws Exception {
         if (!check(type)) {
-            throw new Exception("[ERROR] Syntax error on line " + currentLexeme.lineNumber + ".");
+            throw new Exception("Expected a " + type + " but got a " + currentLexeme.type + ".");
         }
     }
 
@@ -83,7 +82,7 @@ public class Parser {
                 return tree;
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid syntax. Expected a primary on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid syntax. Expected a primary on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -113,7 +112,7 @@ public class Parser {
                 return match("COMPARATOR");
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid syntax. Expected a binary operator on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid syntax. Expected a binary operator on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -131,7 +130,7 @@ public class Parser {
                 return match("MINUSMINUS");
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Expected a unary operator on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Expected a unary operator on line " + currentLexeme.lineNumber + ". " + e.getMessage());
         }
         return null;
     }
@@ -147,7 +146,7 @@ public class Parser {
             tree.left = primary();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid return expression on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid return expression on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -182,7 +181,7 @@ public class Parser {
                 return tree;
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid expression on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid expression on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -214,7 +213,7 @@ public class Parser {
             tree.left.right = match("CBRACKET");
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid syntax in body on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid syntax in body on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -230,14 +229,13 @@ public class Parser {
             }
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid statement list on line " + currentLexeme.lineNumber + "");
+            System.out.println("[ERROR] Invalid statement list on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
     }
 
     public Lexeme lambda() throws Exception {
-        System.out.println("parse lambda...");
         try {
             Lexeme tree = match("LAMBDA");
             tree.left = new Lexeme("GLUE");
@@ -247,7 +245,7 @@ public class Parser {
             tree.left.right = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid lambda syntax on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid lambda syntax on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -273,7 +271,7 @@ public class Parser {
             }
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid syntax in parameter list on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid syntax in parameter list on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -333,7 +331,7 @@ public class Parser {
                 return jv;
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid variable expression on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid variable expression on line " + currentLexeme.lineNumber + ". " + e.getMessage());
         }
         return null;
     }
@@ -370,7 +368,7 @@ public class Parser {
             tree.left.left = expression();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid variable defintion on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid variable defintion on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -386,7 +384,7 @@ public class Parser {
             tree.left = match("VAR");
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid parameter declaration on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid parameter declaration on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -431,7 +429,7 @@ public class Parser {
                 return lambda();
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid statement on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid statement on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -447,7 +445,7 @@ public class Parser {
             }
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid function parameters on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid function parameters on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -464,7 +462,7 @@ public class Parser {
             tree.left.right = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid function definition on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid function definition on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -501,7 +499,7 @@ public class Parser {
                 return tree;
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid conditional syntax on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid conditional syntax on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -516,7 +514,7 @@ public class Parser {
             tree.left.right = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid if statement on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid if statement on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -539,7 +537,7 @@ public class Parser {
             tree.left.right = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid elif statement on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid elif statement on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -551,7 +549,7 @@ public class Parser {
             tree.right = elifChain();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid if chain on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid if chain on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -567,7 +565,7 @@ public class Parser {
             tree.left = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid else statement on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid else statement on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -587,7 +585,7 @@ public class Parser {
             }
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid elif chain on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid elif chain on line " + currentLexeme.lineNumber + ". " + e.getMessage());
         }
         return null;
     }
@@ -614,7 +612,7 @@ public class Parser {
             tree.left.right = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid while loop on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid while loop on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -634,7 +632,7 @@ public class Parser {
             tree.left.right.right.left = body();
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid for loop on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid for loop on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -653,7 +651,7 @@ public class Parser {
             tree.left.right = match("CPAREN");
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid print statement on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid print statement on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -680,7 +678,7 @@ public class Parser {
             tree.left = temp;
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid conditional list on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid conditional list on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -700,7 +698,7 @@ public class Parser {
             match("CSQUARE");
             return tree;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid array declaration on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid array declaration on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;
@@ -734,7 +732,7 @@ public class Parser {
             top.left = tree;
             return top;
         } catch (Exception e) {
-            System.out.println("[ERROR] Invalid array expression on line " + currentLexeme.lineNumber + ".");
+            System.out.println("[ERROR] Invalid array expression on line " + currentLexeme.lineNumber + ". " + e.getMessage());
             System.exit(0);
         }
         return null;

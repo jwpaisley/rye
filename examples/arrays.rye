@@ -1,12 +1,16 @@
 /= arrays.rye =/
   arr items = [];
   var x = 3;
+
   items[0] = 1;
   items[1] = 5;
   items[2] = 7;
   items[3] = 21;
+  items[4] = 54;
+
   print(items[0]);
   print(items[1]);
   print(items[2]);
   print(items[x]);
+  print(items[x + 1]);
 end
